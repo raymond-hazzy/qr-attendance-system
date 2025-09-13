@@ -1,0 +1,24 @@
+
+localStorage.setItem('authToken', 'test-token-12345');
+localStorage.setItem('userData', JSON.stringify({
+  matricNo: 'CSC/2021/001',
+  email: 'test@student.com',
+  department: 'CSC with math',
+  profileImage: null
+}));
+
+
+window.location.href = '/dashboard';
+
+
+localStorage.setItem('authToken', 'admin-test-token');
+localStorage.setItem('userData', JSON.stringify({
+  name: 'Dr. Lecturer',
+  email: 'admin@university.edu',
+  role: 'admin'
+}));
+localStorage.setItem('userRole', 'admin');
+window.location.href = '/lecturer-dashboard';
+
+
+
