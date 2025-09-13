@@ -19,7 +19,6 @@ const LecturerDashboard = () => {
           <p className="text-[var(--color-light-grey-600)]">Manage student attendance and courses</p>
         </div>
         
-        {/* Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div 
             onClick={() => navigate('/lecturer-scanner')}

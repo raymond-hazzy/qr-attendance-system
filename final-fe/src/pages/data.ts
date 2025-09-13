@@ -3,7 +3,7 @@ export interface Course {
   id: string;
   code: string;
   name: string;
-  department: string; // Add department reference
+  department: string; 
 }
 
 export interface Department {

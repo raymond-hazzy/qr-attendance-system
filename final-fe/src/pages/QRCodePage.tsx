@@ -20,7 +20,6 @@ const QRCodePage = () => {
         setIsLoading(true);
         setError("");
         
-        // Get data from localStorage
         const storedData = localStorage.getItem('userData');
         console.log('Raw localStorage data:', storedData);
         
@@ -30,7 +29,6 @@ const QRCodePage = () => {
           setUserData(parsedData);
           
           if (parsedData.profileImage) {
-            // Construct the full URL for the image
             const imagePath = parsedData.profileImage;
             const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
             const fullImageUrl = `http://localhost:5000/${cleanPath}`;
@@ -38,7 +36,6 @@ const QRCodePage = () => {
             console.log('Constructed image URL:', fullImageUrl);
             setProfileImageUrl(fullImageUrl);
             
-            // Test if image loads
             testImageLoad(fullImageUrl);
           } else {
             console.log('No profileImage found in user data');
@@ -58,7 +55,6 @@ const QRCodePage = () => {
     loadUserData();
   }, []);
 
-  // Function to test if image loads successfully
   const testImageLoad = (url: string) => {
     const img = new Image();
     img.onload = () => {
@@ -126,7 +122,6 @@ const QRCodePage = () => {
             ) : null}
           </div>
 
-          {/* Student Info Section */}
           <div className="flex-1">
             <h3 className="text-xl font-semibold text-[var(--color-navy-blue-800)] mb-4">Student Information</h3>
             
@@ -192,7 +187,6 @@ const QRCodePage = () => {
                   <p className="text-[var(--color-navy-blue-800)]">{courseCode}</p>
                 </div>
 
-                {/* Debug info */}
                 <div className="mt-3 p-2 bg-gray-100 rounded text-xs">
                   <div>Image path in DB: {userData.profileImage || 'None'}</div>
                   <div>Constructed URL: {profileImageUrl || 'None'}</div>

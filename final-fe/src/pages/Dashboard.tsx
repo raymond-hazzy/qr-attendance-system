@@ -48,7 +48,6 @@ const Dashboard = () => {
     try {
       const response = await attendanceApi.generateQRCode(selectedCourse);
       
-      // Navigate to QR code page with the generated QR code
       navigate("/qr-attendance", { 
         state: { 
           courseCode: selectedCourse,
