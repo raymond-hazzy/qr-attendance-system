@@ -5,8 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 const QRCodePage = () => {
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [timeRemaining, setTimeRemaining] = useState<number>(30);
-  const [attendanceMarked, setAttendanceMarked] = useState<boolean>(false);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
   const [error, setError] = useState<string>("");
@@ -15,7 +13,6 @@ const QRCodePage = () => {
   
   const courseCode = location.state?.courseCode || "Unknown Course";
   const qrCodeData = location.state?.qrCode || null;
-  const expiresIn = location.state?.expiresIn || 30;
 
   useEffect(() => {
     const loadUserData = () => {
@@ -77,24 +74,10 @@ const QRCodePage = () => {
   useEffect(() => {
     if (qrCodeData) {
       setQrCode(qrCodeData);
-      setTimeRemaining(expiresIn);
-      
-      const timer = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            setAttendanceMarked(true);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      
-      return () => clearInterval(timer);
     } else {
       navigate("/dashboard");
     }
-  }, [qrCodeData, expiresIn, navigate]);
+  }, [qrCodeData, navigate]);
 
   const handleBackToDashboard = () => {
     navigate("/dashboard");
@@ -116,23 +99,12 @@ const QRCodePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-[var(--color-light-grey-50)] to-[var(--color-light-grey-100)] py-8 px-4 flex items-center justify-center">
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8 text-center border border-[var(--color-light-grey-200)]">
         <h1 className="text-3xl font-bold text-[var(--color-navy-blue-600)] mb-2">
-          {attendanceMarked ? "QR Code Expired! ⏰" : "Scan QR Code for Attendance"}
+          Scan QR Code for Attendance
         </h1>
         
         <p className="text-[var(--color-light-grey-600)] mb-6">
-          {attendanceMarked 
-            ? "This QR code has expired. Please generate a new one from your dashboard."
-            : `Please show this QR code to your lecturer to mark attendance for ${courseCode}`
-          }
+          Please show this QR code to your lecturer to mark attendance for {courseCode}
         </p>
-
-        {!attendanceMarked && (
-          <div className="mb-6">
-            <div className="inline-block bg-[var(--color-golden-yellow-100)] text-[var(--color-golden-yellow-800)] px-4 py-2 rounded-full text-sm font-medium">
-              QR code expires in: <span className="font-bold">{timeRemaining}</span> seconds
-            </div>
-          </div>
-        )}
 
         {error && (
           <div className="bg-yellow-100 text-yellow-800 p-3 rounded-lg mb-4 border border-yellow-200">
@@ -143,19 +115,13 @@ const QRCodePage = () => {
         <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
           {/* QR Code Section */}
           <div className="flex-1">
-            {qrCode && !attendanceMarked ? (
+            {qrCode ? (
               <div className="bg-white p-4 rounded-xl shadow-lg inline-block border border-[var(--color-light-grey-200)]">
                 <img 
                   src={qrCode} 
                   alt="Attendance QR Code" 
                   className="w-64 h-64 mx-auto"
                 />
-              </div>
-            ) : attendanceMarked ? (
-              <div className="text-center py-10">
-                <div className="text-orange-500 text-6xl mb-4">⏰</div>
-                <p className="text-orange-700 font-semibold">QR Code Expired</p>
-                <p className="text-orange-600 text-sm mt-2">Please generate a new code</p>
               </div>
             ) : null}
           </div>
