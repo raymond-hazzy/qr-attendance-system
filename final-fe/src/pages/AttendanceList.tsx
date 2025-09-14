@@ -1,4 +1,3 @@
-
 // src/pages/AttendanceList.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +5,7 @@ import { attendanceApi } from "../pages/api";
 import { departments } from "./data";
 import type { AttendanceRecord, SummaryData } from "../pages/api";
 import { Download } from "lucide-react";
+import Papa from "papaparse";
 
 interface CourseOption {
   code: string;
@@ -25,13 +25,11 @@ const AttendanceList = () => {
   });
   const navigate = useNavigate();
 
-  
   const getAllCourses = (): CourseOption[] => {
     const allCourses: CourseOption[] = [];
     
     departments.forEach(dept => {
       dept.courses.forEach(course => {
-        
         if (!allCourses.find(c => c.code === course.code)) {
           allCourses.push({
             code: course.code,
@@ -83,6 +81,42 @@ const AttendanceList = () => {
     return course ? `${course.code} - ${course.name}` : courseCode;
   };
 
+  const exportToCSV = () => {
+    if (attendanceRecords.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    const csvData = attendanceRecords.map(record => ({
+      'Student Name': record.fullName,
+      'Matric Number': record.matricNo,
+      'Course Code': record.courseCode,
+      'Last Scan': new Date(record.lastScanned).toLocaleString(),
+      'Total Scans': record.scanCount,
+      'Department': record.courseCode === 'MTH 202' ? 'CSC with math' : 
+                   record.courseCode === 'CSC 201' ? 'CSC with math' :
+                   record.courseCode === 'CSC 205' ? 'CSC with math' :
+                   record.courseCode === 'ECN 204' ? 'CSC with ECN' :
+                   record.courseCode === 'CSC 203' ? 'CSC with ECN' :
+                   record.courseCode === 'EEE 202' ? 'Computer Engineering' :
+                   record.courseCode === 'CPE 204' ? 'Computer Engineering' :
+                   record.courseCode === 'MEE 204' ? 'Computer Engineering' :
+                   record.courseCode === 'MEE 206' ? 'Computer Engineering' : 'Unknown'
+    }));
+
+    const csv = Papa.unparse(csvData);
+    
+    const binaryLargeObject = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(binaryLargeObject);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `attendance-${selectedCourse}-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[var(--color-light-grey-100)] flex items-center justify-center">
@@ -102,7 +136,7 @@ const AttendanceList = () => {
             onClick={() => navigate("/lecturer-scanner")}
             className="bg-[var(--color-golden-yellow-300)] hover:bg-[var(--color-golden-yellow-700)] text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md"
           >
-             Back to Scanner
+            Back to Scanner
           </button>
         </div>
 
@@ -129,6 +163,14 @@ const AttendanceList = () => {
             >
               🔄 Refresh
             </button>
+            {/* <button
+              onClick={exportToCSV}
+              disabled={attendanceRecords.length === 0}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md flex items-center gap-2"
+            >
+              <Download size={18} />
+              Export CSV
+            </button> */}
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
@@ -201,6 +243,20 @@ const AttendanceList = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-[var(--color-light-grey-200)]">
+          <div className="flex justify-between items-center p-4 bg-[var(--color-light-grey-50)]">
+            <h4 className="font-semibold text-[var(--color-navy-blue-800)]">
+              Attendance Records ({attendanceRecords.length})
+            </h4>
+            <button
+              onClick={exportToCSV}
+              disabled={attendanceRecords.length === 0}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md flex items-center gap-2"
+            >
+              <Download size={18} />
+              download data
+            </button>
+          </div>
+          
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-[var(--color-light-grey-50)]">
@@ -220,9 +276,6 @@ const AttendanceList = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--color-light-grey-600)] uppercase tracking-wider">
                     Total Scans
                   </th>
-                  <button>
-                    <Download  size={30} className="text-[var(--color-light-grey-600)]"/ >
-                  </button>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-[var(--color-light-grey-200)]">
@@ -230,17 +283,6 @@ const AttendanceList = () => {
                   <tr key={record.id} className="hover:bg-[var(--color-light-grey-50)]">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        {/* {record.profileImage ? (
-                          <img
-                            src={record.profileImage}
-                            alt={record.fullName}
-                            className="h-10 w-10 rounded-full object-cover mr-3"
-                          />
-                        ) : (
-                          <div className="h-10 w-10 rounded-full bg-[var(--color-light-grey-200)] flex items-center justify-center mr-3">
-                            <span className="text-lg">👤</span>
-                          </div>
-                        )} */}
                         <div>
                           <div className="font-medium text-[var(--color-navy-blue-900)]">
                             {record.fullName}

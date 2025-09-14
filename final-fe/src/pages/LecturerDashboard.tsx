@@ -62,7 +62,7 @@ const LecturerDashboard = () => {
               <div className="text-[var(--color-golden-yellow-600)] text-sm">Total Students</div>
             </div>
             <div className="bg-[var(--color-navy-blue-50)] p-4 rounded-lg text-center border border-[var(--color-navy-blue-100)]">
-              <div className="text-2xl font-bold text-[var(--color-navy-blue-700)]">5</div>
+              <div className="text-2xl font-bold text-[var(--color-navy-blue-700)]">7</div>
               <div className="text-[var(--color-navy-blue-600)] text-sm">Active Courses</div>
             </div>
             <div className="bg-[var(--color-golden-yellow-50)] p-4 rounded-lg text-center border border-[var(--color-golden-yellow-100)]">
