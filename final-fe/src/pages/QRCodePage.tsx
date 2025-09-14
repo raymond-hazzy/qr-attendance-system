@@ -94,13 +94,13 @@ const QRCodePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--color-light-grey-50)] to-[var(--color-light-grey-100)] py-8 px-4 flex items-center justify-center">
-      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8 text-center border border-[var(--color-light-grey-200)]">
-        <h1 className="text-3xl font-bold text-[var(--color-navy-blue-600)] mb-2">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--color-light-grey-50)] to-[var(--color-light-grey-100)] py-4 px-4 flex items-center justify-center">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-4 md:p-8 text-center border border-[var(--color-light-grey-200)] mx-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-[var(--color-navy-blue-600)] mb-2">
           Scan QR Code for Attendance
         </h1>
         
-        <p className="text-[var(--color-light-grey-600)] mb-6">
+        <p className="text-[var(--color-light-grey-600)] mb-6 text-sm md:text-base">
           Please show this QR code to your lecturer to mark attendance for {courseCode}
         </p>
 
@@ -111,29 +111,29 @@ const QRCodePage = () => {
         )} */}
       
 
-        <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-          <div className="flex-1">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-center">
+          <div className="flex-1 w-full">
             {qrCode ? (
-              <div className="bg-white p-4 rounded-xl shadow-lg inline-block border border-[var(--color-light-grey-200)]">
+              <div className="bg-white p-2 md:p-4 rounded-xl shadow-lg inline-block border border-[var(--color-light-grey-200)] max-w-full">
                 <img 
                   src={qrCode} 
                   alt="Attendance QR Code" 
-                  className="w-64 h-64 mx-auto"
+                  className="w-48 h-48 md:w-64 md:h-64 mx-auto"
                 />
               </div>
             ) : null}
           </div>
 
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold text-[var(--color-navy-blue-800)] mb-4">Student Information</h3>
+          <div className="flex-1 w-full">
+            <h3 className="text-lg md:text-xl font-semibold text-[var(--color-navy-blue-800)] mb-4">Student Information</h3>
             
-            <div className="mb-6 flex justify-center">
+            <div className="mb-4 md:mb-6 flex justify-center">
               {profileImageUrl ? (
                 <div className="relative">
                   <img 
                     src={profileImageUrl} 
                     alt="Student" 
-                    className="w-32 h-32 rounded-full object-cover border-4 border-[var(--color-navy-blue-200)] shadow-md"
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-[var(--color-navy-blue-200)] shadow-md"
                     onError={(e) => {
                       console.error('Failed to load image in img tag:', profileImageUrl);
                       e.currentTarget.style.display = 'none';
@@ -141,8 +141,8 @@ const QRCodePage = () => {
                       if (fallback) fallback.style.display = 'flex';
                     }}
                   />
-                  <div className="hidden absolute inset-0 w-32 h-32 rounded-full bg-[var(--color-light-grey-200)] items-center justify-center border-4 border-[var(--color-navy-blue-200)]">
-                    <span className="text-[var(--color-light-grey-500)] text-4xl">👤</span>
+                  <div className="hidden absolute inset-0 w-24 h-24 md:w-32 md:h-32 rounded-full bg-[var(--color-light-grey-200)] items-center justify-center border-4 border-[var(--color-navy-blue-200)]">
+                    <span className="text-[var(--color-light-grey-500)] text-2xl md:text-4xl">👤</span>
                   </div>
                   <div className="absolute -bottom-2 left-0 right-0 flex justify-center">
                     <span className="bg-[var(--color-navy-blue-500)] text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -151,8 +151,8 @@ const QRCodePage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="w-32 h-32 rounded-full bg-[var(--color-light-grey-200)] flex items-center justify-center border-4 border-[var(--color-navy-blue-200)]">
-                  <span className="text-[var(--color-light-grey-500)] text-4xl">👤</span>
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[var(--color-light-grey-200)] flex items-center justify-center border-4 border-[var(--color-navy-blue-200)] relative">
+                  <span className="text-[var(--color-light-grey-500)] text-2xl md:text-4xl">👤</span>
                   <div className="absolute -bottom-2 left-0 right-0 flex justify-center">
                     <span className="bg-[var(--color-navy-blue-500)] text-white text-xs font-bold px-2 py-1 rounded-full">
                       Verified
@@ -163,7 +163,7 @@ const QRCodePage = () => {
             </div>
             
             {userData && (
-              <div className="space-y-2 text-left bg-[var(--color-light-grey-50)] p-4 rounded-xl">
+              <div className="space-y-2 text-left bg-[var(--color-light-grey-50)] p-3 md:p-4 rounded-xl text-sm md:text-base">
                 <div>
                   <span className="font-semibold text-[var(--color-navy-blue-700)]">Name:</span>
                   <p className="text-[var(--color-navy-blue-800)]">{userData.fullName || "Not provided"}</p>
@@ -198,17 +198,17 @@ const QRCodePage = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="mt-6 md:mt-8 flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
           <button
             onClick={handleBackToDashboard}
-            className="bg-[var(--color-navy-blue-600)] hover:bg-[var(--color-navy-blue-700)] text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 shadow-md"
+            className="bg-[var(--color-navy-blue-600)] hover:bg-[var(--color-navy-blue-700)] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-xl transition-colors duration-200 shadow-md mb-2 sm:mb-0"
           >
             Back to Dashboard
           </button>
           
           <button
             onClick={refreshPage}
-            className="bg-[var(--color-golden-yellow-600)] hover:bg-[var(--color-golden-yellow-700)] text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200 shadow-md"
+            className="bg-[var(--color-golden-yellow-600)] hover:bg-[var(--color-golden-yellow-700)] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-xl transition-colors duration-200 shadow-md"
           >
             🔄 Refresh
           </button>
