@@ -19,10 +19,8 @@ const protect = async (req: AuthRequest, res: Response, next: NextFunction): Pro
       return;
     }
 
-    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
     
-    // Check if user still exists
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
       res.status(401).json({
@@ -31,7 +29,6 @@ const protect = async (req: AuthRequest, res: Response, next: NextFunction): Pro
       return;
     }
 
-    // Add user to request
     req.user = currentUser;
     next();
   } catch (error) {
@@ -41,7 +38,6 @@ const protect = async (req: AuthRequest, res: Response, next: NextFunction): Pro
   }
 };
 
-// Restrict to certain roles
 const restrictTo = (...roles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {

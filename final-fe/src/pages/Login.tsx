@@ -77,7 +77,7 @@ const Login = () => {
                 : "text-[var(--color-light-grey-600)] hover:text-[var(--color-navy-blue-700)]"
             }`}
           >
-            Admin Login
+            Lecturer Login
           </button>
         </div>
 

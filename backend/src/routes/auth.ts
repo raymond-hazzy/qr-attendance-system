@@ -10,6 +10,6 @@ router.post('/register', upload.single('profileImage'), register);
 router.post('/login', login);
 router.post('/admin-login', adminLogin);
 router.post('/refresh-token', protect, refreshToken);
-router.get('/me', protect, getCurrentUser); // This is the correct endpoint
+router.get('/me', protect, getCurrentUser); 
 
 export default router;

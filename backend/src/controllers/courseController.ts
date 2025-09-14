@@ -12,7 +12,6 @@ export const getCourses = async (req: AuthRequest, res: Response): Promise<void>
     if (departmentId === 'all') {
       courses = await Course.find();
     } else {
-      // Find by department name instead of ID to match frontend
       const department = await Department.findOne({ name: departmentId });
       if (!department) {
         res.status(404).json({
@@ -48,7 +47,6 @@ export const getAllCourses = async (req: AuthRequest, res: Response): Promise<vo
   try {
     const courses = await Course.find().select('code name department -_id');
     
-    // Return unique courses by code
     const uniqueCourses = courses.reduce((acc, course) => {
       if (!acc.find(c => c.code === course.code)) {
         acc.push({ 

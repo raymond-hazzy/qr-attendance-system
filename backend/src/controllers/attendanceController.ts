@@ -16,7 +16,6 @@ const markAttendance = async (req: AuthRequest, res: Response): Promise<void> =>
       return;
     }
 
-    // Decrypt the QR code data
     let qrData;
     try {
       qrData = decryptData(encryptedData);
@@ -29,7 +28,6 @@ const markAttendance = async (req: AuthRequest, res: Response): Promise<void> =>
 
     const { studentId, courseCode, timestamp } = qrData;
 
-    // Verify the student exists
     const student = await User.findById(studentId);
     if (!student) {
       res.status(404).json({
@@ -38,7 +36,6 @@ const markAttendance = async (req: AuthRequest, res: Response): Promise<void> =>
       return;
     }
 
-    // Check if attendance already marked for today
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
@@ -51,7 +48,6 @@ const markAttendance = async (req: AuthRequest, res: Response): Promise<void> =>
     });
 
     if (existingAttendance) {
-      // Update scan count if already exists
       existingAttendance.scanCount += 1;
       existingAttendance.timestamp = new Date();
       await existingAttendance.save();
@@ -71,7 +67,6 @@ const markAttendance = async (req: AuthRequest, res: Response): Promise<void> =>
       return;
     }
 
-    // Create new attendance record
     const attendanceRecord = await Attendance.create({
       studentId,
       matricNo: student.matricNo,
@@ -114,7 +109,6 @@ const generateQRCodeData = async (req: AuthRequest, res: Response): Promise<void
       return;
     }
 
-    // Verify the course exists
     const Course = require('../models/Course').default;
     const course = await Course.findOne({ code: courseCode });
     if (!course) {
@@ -124,7 +118,6 @@ const generateQRCodeData = async (req: AuthRequest, res: Response): Promise<void
       return;
     }
 
-    // Create QR data
     const qrData = {
       studentId,
       matricNo: req.user!.matricNo,
@@ -132,7 +125,6 @@ const generateQRCodeData = async (req: AuthRequest, res: Response): Promise<void
       timestamp: new Date().toISOString()
     };
 
-    // Generate QR code
     const { generateQRCode } = require('../utils/qrGenerator');
     const qrCode = await generateQRCode(qrData);
 
@@ -149,7 +141,6 @@ const generateQRCodeData = async (req: AuthRequest, res: Response): Promise<void
   }
 };
 
-// Get attendance list with filtering
 const getAttendanceList = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { course } = req.query;
@@ -161,7 +152,6 @@ const getAttendanceList = async (req: AuthRequest, res: Response): Promise<void>
       filter.courseCode = course;
     }
 
-    // If user is a student, only show their own attendance
     if (user.role === 'student') {
       filter.studentId = user._id;
     }
@@ -191,7 +181,6 @@ const getAttendanceList = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// Get attendance summary with registered counts
 const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { course } = req.query;
@@ -199,7 +188,6 @@ const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<vo
     let registeredCount = 0;
     let todayScans = 0;
 
-    // Define which departments offer which courses
     const courseDepartments: { [key: string]: string[] } = {
       'MTH 202': ['CSC with math'],
       'CSC 201': ['CSC with math', 'CSC with ECN'],
@@ -215,7 +203,6 @@ const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<vo
     if (course && course !== 'all') {
       const courseStr = course.toString();
       
-      // Count students in departments that offer this course
       const departmentsForCourse = courseDepartments[courseStr] || [];
       
       if (departmentsForCourse.length > 0) {
@@ -225,7 +212,6 @@ const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<vo
         });
       }
       
-      // Count today's scans for this course
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
@@ -235,11 +221,10 @@ const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<vo
         courseCode: courseStr,
         timestamp: { $gte: today, $lt: tomorrow }
       });
+
     } else {
-      // Count all student users (not admins/lecturers)
       registeredCount = await User.countDocuments({ role: 'student' });
       
-      // Count all today's scans
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
@@ -264,7 +249,6 @@ const getAttendanceSummary = async (req: AuthRequest, res: Response): Promise<vo
   }
 };
 
-// Export all functions
 export {
   markAttendance,
   generateQRCodeData,

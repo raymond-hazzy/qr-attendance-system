@@ -7,9 +7,9 @@ const router = express.Router();
 
 router.use(protect);
 
-// Match frontend expected endpoints
+// endpoints
 router.get('/:departmentId', getCourses);
 router.get('/', getDepartments);
-router.get('/all/courses', getAllCourses); // Changed to match frontend
+router.get('/all/courses', getAllCourses); 
 
 export default router;

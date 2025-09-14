@@ -10,10 +10,9 @@ import { protect, restrictTo } from '../middleware/auth';
 
 const router = express.Router();
 
-// Apply protection to all routes
 router.use(protect);
 
-// Match frontend expected endpoints
+//endpoints
 router.post('/mark', restrictTo('admin', 'lecturer'), markAttendance);
 router.post('/qr-code', restrictTo('student'), generateQRCodeData);
 router.get('/list', getAttendanceList);

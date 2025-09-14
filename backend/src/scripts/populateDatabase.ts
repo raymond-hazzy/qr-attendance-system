@@ -44,12 +44,10 @@ async function populateDatabase() {
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
 
-    // Clear existing data
     await Department.deleteMany({});
     await Course.deleteMany({});
     console.log('Cleared existing data');
 
-    // Insert departments and courses
     for (const deptData of departmentsData) {
       const department = new Department({
         name: deptData.name,
@@ -57,7 +55,6 @@ async function populateDatabase() {
       });
       await department.save();
 
-      // Create course documents
       for (const courseData of deptData.courses) {
         const course = new Course({
           code: courseData.code,

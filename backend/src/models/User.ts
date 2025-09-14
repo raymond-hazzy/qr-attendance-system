@@ -76,12 +76,10 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-// Compare password method
 userSchema.methods.correctPassword = async function(candidatePassword: string, userPassword: string): Promise<boolean> {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-// Method to add courses based on department
 userSchema.methods.assignCoursesByDepartment = function(): string[] {
   const departmentCourses: { [key: string]: string[] } = {
     'CSC with math': ['MTH 202', 'CSC 201', 'CSC 205'],
@@ -94,17 +92,14 @@ userSchema.methods.assignCoursesByDepartment = function(): string[] {
   return this.registeredCourses;
 };
 
-// Virtual for user's display name
 userSchema.virtual('displayName').get(function() {
   return `${this.fullName} (${this.matricNo})`;
 });
 
-// Method to check if user is admin
 userSchema.methods.isAdmin = function(): boolean {
   return this.role === 'admin' || this.role === 'lecturer';
 };
 
-// Remove password from output
 userSchema.set('toJSON', {
   transform: function(doc, ret) {
     delete ret.password;

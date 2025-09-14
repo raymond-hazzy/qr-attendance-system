@@ -6,7 +6,6 @@ import User from '../models/User';
 import Course from '../models/Course';
 import { AuthRequest } from '../types';
 
-// Get dashboard overview data
 export const getDashboardOverview = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const today = new Date();
@@ -14,18 +13,14 @@ export const getDashboardOverview = async (req: AuthRequest, res: Response): Pro
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Get today's scans across all courses
     const todayScans = await Attendance.countDocuments({
       timestamp: { $gte: today, $lt: tomorrow }
     });
 
-    // Get total registered students
     const totalStudents = await User.countDocuments({ role: 'student' });
 
-    // Get total courses available
     const totalCourses = await Course.countDocuments();
 
-    // Calculate attendance rate (students who attended today vs total students)
     const uniqueStudentsToday = await Attendance.distinct('studentId', {
       timestamp: { $gte: today, $lt: tomorrow }
     });
@@ -50,7 +45,6 @@ export const getDashboardOverview = async (req: AuthRequest, res: Response): Pro
   }
 };
 
-// Export attendance data as CSV
 export const exportAttendanceCSV = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { course } = req.query;
@@ -64,7 +58,6 @@ export const exportAttendanceCSV = async (req: AuthRequest, res: Response): Prom
       .populate('studentId', 'fullName matricNo profileImage')
       .sort({ timestamp: -1 });
 
-    // Group by student and course to get latest scan and total scans
     const studentCourseMap = new Map();
     
     attendanceRecords.forEach(record => {
@@ -83,7 +76,6 @@ export const exportAttendanceCSV = async (req: AuthRequest, res: Response): Prom
 
     const records = Array.from(studentCourseMap.values());
 
-    // Convert to CSV
     let csv = 'Name,Matric No,Course,Last Scan,Total Scans\n';
     
     records.forEach(record => {

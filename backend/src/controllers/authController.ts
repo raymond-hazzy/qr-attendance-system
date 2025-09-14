@@ -6,12 +6,10 @@ import { AuthRequest } from '../types';
 import path from 'path';
 import fs from 'fs';
 
-// Register new user
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { fullName, matricNo, email, password, department } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ email: email.toLowerCase() }, { matricNo: matricNo.toUpperCase() }]
     });
@@ -26,15 +24,12 @@ const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    /// Handle file upload - ensure consistent path format
     let profileImagePath: string | undefined;
     if (req.file) {
-      // Use consistent path format without leading slash
       profileImagePath = `uploads/${req.file.filename}`;
       console.log('Profile image saved at:', profileImagePath);
     }
 
-    // Create new user
     const newUser = await User.create({
       fullName,
       matricNo: matricNo.toUpperCase(),
@@ -44,13 +39,11 @@ const register = async (req: Request, res: Response): Promise<void> => {
       profileImage: profileImagePath
     });
 
-    // Auto-assign courses based on department
     newUser.assignCoursesByDepartment();
     await newUser.save();
 
     const token = signToken(newUser._id.toString());
 
-    // DEBUG: Log the user data being sent
     console.log('Register response user data:', {
       id: newUser._id.toString(),
       fullName: newUser.fullName,
@@ -84,7 +77,6 @@ const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Login user
 const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { matricNo, password } = req.body;
@@ -105,13 +97,11 @@ const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Update last login
     user.lastLogin = new Date();
     await user.save();
 
     const token = signToken(user._id.toString());
 
-    // DEBUG: Log the user data being sent
     console.log('Login response user data:', {
       id: user._id.toString(),
       fullName: user.fullName,
@@ -143,7 +133,6 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Admin login
 const adminLogin = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -167,13 +156,11 @@ const adminLogin = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Update last login
     user.lastLogin = new Date();
     await user.save();
 
     const token = signToken(user._id.toString());
 
-    // DEBUG: Log the user data being sent
     console.log('Admin login response user data:', {
       id: user._id.toString(),
       fullName: user.fullName,
@@ -205,7 +192,6 @@ const adminLogin = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Refresh token
 const refreshToken = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user!;
@@ -232,7 +218,6 @@ const refreshToken = async (req: AuthRequest, res: Response): Promise<void> => {
   }
 };
 
-// Get current user
 const getCurrentUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user!;

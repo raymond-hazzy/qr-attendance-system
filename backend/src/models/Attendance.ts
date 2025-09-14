@@ -32,7 +32,6 @@ const attendanceSchema = new Schema<IAttendance>({
   timestamps: true
 });
 
-// Compound index to prevent duplicate scans for same student and course on same day
 attendanceSchema.index({ 
   studentId: 1, 
   courseCode: 1, 
