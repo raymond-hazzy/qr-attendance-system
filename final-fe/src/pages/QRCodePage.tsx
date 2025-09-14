@@ -189,7 +189,7 @@ const QRCodePage = () => {
                   <p className="text-[var(--color-navy-blue-800)]">{courseCode}</p>
                 </div>
 
-                {/* <div className="mt-3 p-2 bg-gray-100 rounded text-xs">
+                {/*<div className="mt-3 p-2 bg-gray-100 rounded text-xs">
                   <div>Image path in DB: {userData.profileImage || 'None'}</div>
                   <div>Constructed URL: {profileImageUrl || 'None'}</div>
                 </div> */}

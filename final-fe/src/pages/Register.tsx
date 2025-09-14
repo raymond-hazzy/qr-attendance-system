@@ -45,6 +45,11 @@ const Register = () => {
       setError("Please select a department");
       return;
     }
+
+    if (!file) {
+      setError("Please input a picture");
+      return;
+    }
     
     if (password !== confirmPassword) {
       setError("Passwords do not match");
