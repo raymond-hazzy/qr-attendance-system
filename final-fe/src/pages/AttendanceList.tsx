@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { attendanceApi } from "../pages/api";
 import { departments } from "./data";
 import type { AttendanceRecord, SummaryData } from "../pages/api";
+import { Download } from "lucide-react";
 
 interface CourseOption {
   code: string;
@@ -219,6 +220,9 @@ const AttendanceList = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--color-light-grey-600)] uppercase tracking-wider">
                     Total Scans
                   </th>
+                  <button>
+                    <Download  size={30} className="text-[var(--color-light-grey-600)]"/ >
+                  </button>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-[var(--color-light-grey-200)]">
@@ -226,7 +230,7 @@ const AttendanceList = () => {
                   <tr key={record.id} className="hover:bg-[var(--color-light-grey-50)]">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        {record.profileImage ? (
+                        {/* {record.profileImage ? (
                           <img
                             src={record.profileImage}
                             alt={record.fullName}
@@ -236,7 +240,7 @@ const AttendanceList = () => {
                           <div className="h-10 w-10 rounded-full bg-[var(--color-light-grey-200)] flex items-center justify-center mr-3">
                             <span className="text-lg">👤</span>
                           </div>
-                        )}
+                        )} */}
                         <div>
                           <div className="font-medium text-[var(--color-navy-blue-900)]">
                             {record.fullName}

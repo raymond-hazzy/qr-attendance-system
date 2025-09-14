@@ -8,7 +8,6 @@ const LecturerDashboard = () => {
   return (
     <div className="min-h-screen bg-[var(--color-light-grey-50)] p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-[var(--color-navy-blue-700)] rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl text-white">👨‍🏫</span>
