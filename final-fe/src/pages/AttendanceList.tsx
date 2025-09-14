@@ -99,9 +99,9 @@ const AttendanceList = () => {
           </h1>
           <button
             onClick={() => navigate("/lecturer-scanner")}
-            className="bg-[var(--color-golden-yellow-600)] hover:bg-[var(--color-golden-yellow-700)] text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md"
+            className="bg-[var(--color-golden-yellow-300)] hover:bg-[var(--color-golden-yellow-700)] text-white font-semibold py-2 px-4 rounded-lg transition-colors shadow-md"
           >
-            🎯 Back to Scanner
+             Back to Scanner
           </button>
         </div>
 

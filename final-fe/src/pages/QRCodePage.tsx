@@ -21,7 +21,7 @@ const QRCodePage = () => {
         setError("");
         
         const storedData = localStorage.getItem('userData');
-        console.log('Raw localStorage data:', storedData);
+        console.log('localStorage data:', storedData);
         
         if (storedData) {
           const parsedData = JSON.parse(storedData);
@@ -109,7 +109,6 @@ const QRCodePage = () => {
         )}
 
         <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-          {/* QR Code Section */}
           <div className="flex-1">
             {qrCode ? (
               <div className="bg-white p-4 rounded-xl shadow-lg inline-block border border-[var(--color-light-grey-200)]">
