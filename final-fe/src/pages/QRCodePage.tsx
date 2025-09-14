@@ -55,6 +55,8 @@ const QRCodePage = () => {
     loadUserData();
   }, []);
 
+  console.log(error)
+
   const testImageLoad = (url: string) => {
     const img = new Image();
     img.onload = () => {
@@ -102,11 +104,12 @@ const QRCodePage = () => {
           Please show this QR code to your lecturer to mark attendance for {courseCode}
         </p>
 
-        {error && (
+        {/* {error && (
           <div className="bg-yellow-100 text-yellow-800 p-3 rounded-lg mb-4 border border-yellow-200">
-            ⚠️ {error}
+            {error}
           </div>
-        )}
+        )} */}
+      
 
         <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
           <div className="flex-1">
